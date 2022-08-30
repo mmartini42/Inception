@@ -1,0 +1,106 @@
+version: '3.1'
+
+volumes:
+  mariadb_volume:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/mathmart/data/mariadb/
+  nginx_volume:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/mathmart/data/nginx/
+
+services:
+
+  mariadb:
+    build: ./requirements/mariadb
+    image: mariadb:v1
+    container_name: inception_db
+    volumes:
+      - mariadb_volume:/var/lib/mysql
+    env_file:
+      - ./.env
+    networks:
+      - docker-net
+    restart: always
+
+  wordpress:
+    build: ./requirements/wordpress
+    image: wordpress:v1
+    container_name: inception_wordpress
+    depends_on:
+      - mariadb
+    volumes:
+    - nginx_volume:/var/www
+    env_file:
+      - ./.env
+    networks:
+      - docker-net
+    restart: always
+
+  nginx:
+    build: ./requirements/nginx
+    image: nginx:v1
+    container_name: inception_nginx
+    domainname: ${DOMAIN_NAME}
+    depends_on:
+      - wordpress
+    volumes:
+      - nginx_volume:/var/www
+    ports:
+      - 443:443
+    env_file:
+      - ./.env
+    networks:
+      docker-net:
+        aliases:
+          - ${DOMAIN_NAME}
+    restart: always
+
+  adminer:
+    build: ./requirements/bonus/adminer
+    image: adminer:v1
+    container_name: inception_adminer
+    depends_on:
+      - wordpress
+    networks:
+      - docker-net
+    restart: always
+
+  ftp-server:
+    build: ./requirements/bonus/ftp-server
+    image: ftp-server:v1
+    container_name: inception_ftp
+    depends_on:
+      - wordpress
+    networks:
+      - docker-net
+    restart: always
+
+  redis:
+    build: ./requirements/bonus/redis
+    image: redis:v1
+    container_name: inception_redis
+    depends_on:
+      - wordpress
+    networks:
+      - docker-net
+    restart: always
+
+  minecraft:
+    build: ./requirements/bonus/minecraft
+    image: minecraft:v1
+    container_name: inception_minecraft
+    ports:
+      - 25565:25565
+    networks:
+      - docker-net
+    restart: always
+
+networks:
+  docker-net:
+    driver: bridge
