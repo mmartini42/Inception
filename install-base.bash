@@ -30,8 +30,8 @@ install() {
     apt install -y apt-transport-https ca-certificates curl gnupg2 software-properties-common
     curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add -
     add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable"
-    apt-get update -y && apt-get upgrade -y
-    apt install -y docker-ce
+    apt-get update -y && apt-get upgrade -y git curl wget
+    apt install -y docker-ce make
     curl -L https://github.com/docker/compose/releases/download/1.25.3/docker-compose-`uname -s`-`uname -m` \
       -o /usr/local/bin/docker-compose
     chmod +x /usr/local/bin/docker-compose
@@ -43,5 +43,5 @@ install() {
 initialCheck;
 
 echo "127.0.0.1     mathmart.42lyon.fr" >> /etc/hosts
-echo "%root   (ALL) NOPASSWD: ALL"
+echo "%root   (ALL) NOPASSWD: ALL" >> /etc/sudoers
 printf "%sAdd mathmart to hosts file %s\n" "$cyan" "$normal"

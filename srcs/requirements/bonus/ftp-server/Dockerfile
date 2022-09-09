@@ -4,10 +4,10 @@ MAINTAINER mathmart <mathmart@student.42lyon.fr>
 
 #Installation of required packages
 RUN apt-get update -y && apt-get upgrade -y
-RUN apt-get install-y vsftpd libc6-compat
+RUN apt-get install -y vsftpd libc6
 
 #Creat a new user and add password
-RUN adduser -D -g 'mathmart' mathmart
+RUN adduser mathmart
 RUN echo "mathmart:pass" | chpasswd
 
 #Adding Configuration Files
