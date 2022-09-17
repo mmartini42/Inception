@@ -1,8 +1,8 @@
 #!/bin/bash
 
+
 if [ ! -d "/var/www/wordpress" ]; then
 	cp -r /tmp/wordpress /var/www
-  cp /object-cache.php /var/www/wordpress/wp-content/
 	chown -Rv www-data: /var/www/
 	sleep 10
 	wp --allow-root core install --path=/var/www/wordpress --url=$DOMAIN_NAME --title=$WORDPRESS_SITE_TITLE --admin_user=$WORDPRESS_ADMIN_USER --admin_password=$WORDPRESS_ADMIN_PASS --admin_email=$WORDPRESS_ADMIN_EMAIL

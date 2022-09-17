@@ -2,12 +2,11 @@ THIS_FILE := $(lastword $(MAKEFILE_LIST))
 
 docker-compose := srcs/docker-compose.yml
 
-help:
-		make -pRrq  -f $(THIS_FILE) : 2>/dev/null | awk -v RS= -F: '/^# File/,/^# Finished Make data base/ {if ($$1 !~ "^[#.]") {print $$1}}' | sort | egrep -v -e '^[^[:alnum:]]' -e '^$@$$'
-
 all:	build up
 
 build:
+		mkdir -p /home/mathmart/data/nginx/
+		mkdir -p /home/mathmart/data/mariadb/
 		docker-compose -f $(docker-compose) build $(c)
 
 up:
@@ -20,7 +19,7 @@ down:
 		docker-compose -f $(docker-compose) down $(c)
 
 destroy:
-		docker-compose -f $(docker-compose) down --rmi all $(c)
+		docker-compose -f $(docker-compose) down --rmi all -v $(c)
 
 stop:
 		docker-compose -f $(docker-compose) stop $(c)
@@ -37,5 +36,9 @@ logs-api:
 
 ps:
 		docker-compose -f $(docker-compose) ps
+
+fclean: destroy
+		rm -rf /home/mathmart/data/mariadb/*
+		rm -rf /home/mathmart/data/nginx/*
 
 .PHONY: all help build up start down destroy stop restart logs logs-api ps

@@ -30,15 +30,6 @@ if (!function_exists('getenv_docker')) {
     }
 }
 
-define( 'WP_CACHE', true);
-//Salt for the cache objects, site-url, replace dot and forward slash with dash
-define( 'WP_CACHE_KEY_SALT', getenv_docker('WP_REDIS_CACHE_KEY_SALT' , 'mathmart.42Lyon.fr') );
-//IP or hostname of the target server. Either app/container name, i.e. redis1 or localhost
-define( 'WP_REDIS_HOST', getenv_docker('WP_CACHE_REDIS_HOST', 'redis') );
-// Either the default 6379 when using appName as host or 30xxx port number found in app quick view
-define( 'WP_REDIS_PORT', getenv_docker('WP_CACHE_REDIS_PORT','6379' ) );
-//either not set as there is no password by default for Redis, or if you changed redis password, set it here
-
 // ** MySQL settings - You can get this info from your web host ** //
 /** The name of the database for WordPress */
 define( 'DB_NAME', getenv_docker('WORDPRESS_DB_NAME', 'mysql') );
@@ -67,14 +58,14 @@ define( 'DB_COLLATE', getenv_docker('WORDPRESS_DB_COLLATE', '') );
  *
  * @since 2.6.0
  */
-define('AUTH_KEY',         '8$ZL wY,[.^CR%b@>+!U7P|VZ[-I&@@aGP9LV9-R~j%VnS-P|nyZ+4bYKQ6HJ)Te');
-define('SECURE_AUTH_KEY',  'Fy,^qSdO#jkBhVZpl(+sN[3f:%C=Oych~}}&S~G{a8zn0^5ms7 U<qv5#(Nj<?74');
-define('LOGGED_IN_KEY',    '@FTf4K2wEyFuc{W5@yw `lQJs17yK+3KWdAc)Golgk:oBht}~4(|!y[>kl]`4%hD');
-define('NONCE_KEY',        '0le!<=Q6-:qWk,e#+w2,xnsiB}){*Qou6,RaO:B4-VVhr`8&W;a61]XY;yu@b-uE');
-define('AUTH_SALT',        'J}tc`aY|Pff|$ShP>&.XI{H-);=*$Nseqt,e3!`j]H-JG9pDST&++1gw]o6{4UC+');
-define('SECURE_AUTH_SALT', '2dZ<j@n$kcsffL]BU-U~7*eAa+&X)l@<}m KgA<KSNQ]S)KrC^VY8dV5_qLgnxt-');
-define('LOGGED_IN_SALT',   ':G>A%cJA0L<o*;(+r@WR.O)4Ezc|(:3+wkRBI_,DDlAH?24iIgWGxz&&TTrIA0)Y');
-define('NONCE_SALT',       '/p{a<0=MHncbF@C0a`$6Og1Vag_&W!gKgfA>V;pz]b~8Ci):NErr/[)]V$42Z>Ed');
+define( 'AUTH_KEY',         getenv_docker('WORDPRESS_AUTH_KEY',         'put your unique phrase here') );
+define( 'SECURE_AUTH_KEY',  getenv_docker('WORDPRESS_SECURE_AUTH_KEY',  'put your unique phrase here') );
+define( 'LOGGED_IN_KEY',    getenv_docker('WORDPRESS_LOGGED_IN_KEY',    'put your unique phrase here') );
+define( 'NONCE_KEY',        getenv_docker('WORDPRESS_NONCE_KEY',        'put your unique phrase here') );
+define( 'AUTH_SALT',        getenv_docker('WORDPRESS_AUTH_SALT',        'put your unique phrase here') );
+define( 'SECURE_AUTH_SALT', getenv_docker('WORDPRESS_SECURE_AUTH_SALT', 'put your unique phrase here') );
+define( 'LOGGED_IN_SALT',   getenv_docker('WORDPRESS_LOGGED_IN_SALT',   'put your unique phrase here') );
+define( 'NONCE_SALT',       getenv_docker('WORDPRESS_NONCE_SALT',       'put your unique phrase here') );
 
 /**#@-*/
 

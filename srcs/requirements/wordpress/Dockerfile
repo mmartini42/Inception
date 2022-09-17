@@ -2,8 +2,6 @@ FROM debian:buster
 
 MAINTAINER mathmart <mathmart@student.42lyon.fr>
 
-EXPOSE 9000
-
 # Install php
 RUN apt-get update && \
 	apt-get -y install lsb-release apt-transport-https ca-certificates wget curl && \
@@ -24,7 +22,6 @@ RUN cd /tmp/ \
 
 COPY conf/wp-config.php /tmp/wordpress/wp-config.php
 COPY tools/docker-entrypoint.sh /docker-entrypoint.sh
-COPY conf/object-cache.php /
 
 # Configure wordpress
 RUN sed -i "s/\/run\/php\/php7.4-fpm.sock/0.0.0.0:9000/g" /etc/php/7.4/fpm/pool.d/www.conf && \
@@ -32,6 +29,8 @@ RUN sed -i "s/\/run\/php\/php7.4-fpm.sock/0.0.0.0:9000/g" /etc/php/7.4/fpm/pool.
 	sed -i 's/variables_order = "GPCS"/variables_order = "EGPCS"/g' /etc/php/7.4/fpm/php.ini && \
     mkdir -p /run/php && \
 	chmod +x docker-entrypoint.sh
+	# mkdir -p /var/www/wordpress && \
 
 ENTRYPOINT ["./docker-entrypoint.sh"]
 
+EXPOSE 9000
